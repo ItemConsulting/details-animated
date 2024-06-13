@@ -1,0 +1,21 @@
+{
+  "name": "@itemconsulting/details-animated",
+  "license": "MIT",
+  "version": "0.0.1-RC1",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "private": false,
+  "author": "Tom Arild Jakobsen<tajakobsen@gmail.com>",
+  "repository": "https://github.com/ItemConsulting/details-animated",
+  "scripts": {
+    "build": "tsup index.ts --format esm --dts",
+    "release": "pnpm run build && changeset publish",
+    "lint": "tsc"
+  },
+  "files": ["dist", "README.md", "LICENSE", "tsconfig.json"],
+  "devDependencies": {
+    "@changesets/cli": "^2.26.0",
+    "tsup": "^8.1.0",
+    "typescript": "^5.4.5"
+  }
+}
