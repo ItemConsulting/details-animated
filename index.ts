@@ -110,6 +110,6 @@ export default class DetailsAnimated extends HTMLElement {
 
     const stylesheet = new CSSStyleSheet();
     stylesheet.replaceSync(css)
-    document.adoptedStyleSheets = [stylesheet];
+    document.adoptedStyleSheets = [...document.adoptedStyleSheets, stylesheet];
   }
 }
