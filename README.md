@@ -1,5 +1,7 @@
 # Custom component for animating details/summary elements
 
+[![npm version](https://badge.fury.io/js/@itemconsulting%2Fdetails-animated.svg)](https://badge.fury.io/js/@itemconsulting%2Fdetails-animated)
+
 ## Usage
 
 Register the custom element with JavaScript.
