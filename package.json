@@ -1,7 +1,7 @@
 {
   "name": "@itemconsulting/details-animated",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "module": "dist/index.mjs",
   "types": "dist/index.d.mts",
   "private": false,
@@ -12,7 +12,12 @@
     "release": "pnpm run build && changeset publish",
     "lint": "tsc"
   },
-  "files": ["dist", "README.md", "LICENSE", "tsconfig.json"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "tsconfig.json"
+  ],
   "devDependencies": {
     "@changesets/cli": "^2.26.0",
     "tsup": "^8.1.0",
