@@ -25,8 +25,9 @@ export default class DetailsAnimated extends HTMLElement {
     this.detailsEl?.appendChild(accordionBody);
 
     if (this.detailsEl && summaryEl) {
-      // ensure that data-animate-open is set when open is set
-      this.openWithAnimation();
+      if (this.isOpen()) {
+        this.detailsEl?.setAttribute("data-animate-open", "");
+      }
 
       const observer = new MutationObserver(this.openWithAnimation.bind(this));
       observer.observe(this.detailsEl, {
@@ -48,7 +49,8 @@ export default class DetailsAnimated extends HTMLElement {
 
   openWithAnimation(): void {
     if (this.isOpen()) {
-      this.detailsEl?.setAttribute("data-animate-open", "");
+      // Firefox 126 doesn't animate without the setTimeout
+      setTimeout(() => this.detailsEl?.setAttribute("data-animate-open", ""), 0)
     }
   }
 
