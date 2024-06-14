@@ -1,5 +1,11 @@
 # @itemconsulting/details-animated
 
+## 0.0.6
+
+### Patch Changes
+
+- 5632988: Fix opening animation in Firefox
+
 ## 0.0.5
 
 ### Patch Changes
