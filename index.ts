@@ -1,11 +1,14 @@
 export default class DetailsAnimated extends HTMLElement {
   declare detailsEl: HTMLDetailsElement | null;
-  declare bodyEls: NodeList;
+  declare bodyEls: ChildNode[];
 
   connectedCallback() {
     this.detailsEl = this.querySelector(":scope > details");
     const summaryEl = this.detailsEl?.querySelector(":scope > summary") ?? null;
-    this.bodyEls = this.detailsEl?.querySelectorAll(":scope > :not(summary)") ?? new NodeList();
+
+    this.bodyEls = Array.from(this.detailsEl?.childNodes ?? []).filter((node: ChildNode) => {
+      return node instanceof HTMLElement ? node.tagName !== "SUMMARY" : true;
+    })
 
     const transformEl = document.createElement("div");
     transformEl.classList.add("animated-disclosure--transform");

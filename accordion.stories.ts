@@ -10,7 +10,7 @@ export default  {
     <details-animated>
       <details ${args.isOpen ? "open" : ""}>
         <summary>${args.summary}</summary>
-        <p>${args.details}</p>
+        ${args.details}
       </details>
     </details-animated>
     `,
