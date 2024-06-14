@@ -2,13 +2,13 @@ export default class DetailsAnimated extends HTMLElement {
   declare detailsEl: HTMLDetailsElement | null;
   declare bodyEls: ChildNode[];
 
-  connectedCallback() {
+  connectedCallback(): void {
     this.detailsEl = this.querySelector(":scope > details");
     const summaryEl = this.detailsEl?.querySelector(":scope > summary") ?? null;
 
     this.bodyEls = Array.from(this.detailsEl?.childNodes ?? []).filter((node: ChildNode) => {
       return node instanceof HTMLElement ? node.tagName !== "SUMMARY" : true;
-    })
+    });
 
     const transformEl = document.createElement("div");
     transformEl.classList.add("animated-disclosure--transform");
@@ -25,38 +25,34 @@ export default class DetailsAnimated extends HTMLElement {
     this.detailsEl?.appendChild(accordionBody);
 
     if (this.detailsEl && summaryEl) {
+      // ensure that data-animate-open is set when open is set
+      this.openWithAnimation();
+
+      const observer = new MutationObserver(this.openWithAnimation.bind(this));
+      observer.observe(this.detailsEl, {
+        attributes: true,
+        attributeFilter: ["open"],
+      })
+
       summaryEl.addEventListener("click", this.handleSummaryClick.bind(this));
       this.addStylesToPage()
     }
   }
 
-  disconnectedCallback() {}
-
-  handleSummaryClick(event: Event) {
-    event.preventDefault();
-
+  handleSummaryClick(event: Event): void {
     if (this.isOpen()) {
+      event.preventDefault();
       this.closeWithAnimation();
-    } else {
-      this.openWithAnimation();
     }
   }
 
   openWithAnimation(): void {
-    this.detailsEl?.addEventListener(
-        "toggle",
-        () => {
-          this.detailsEl?.setAttribute("data-animate-open", "");
-        },
-        {
-          once: true,
-        },
-    );
-
-    this.detailsEl?.setAttribute("open", "");
+    if (this.isOpen()) {
+      this.detailsEl?.setAttribute("data-animate-open", "");
+    }
   }
 
-  closeWithAnimation() {
+  closeWithAnimation(): void {
     this.detailsEl?.addEventListener(
         "transitionend",
         () => {
@@ -74,7 +70,7 @@ export default class DetailsAnimated extends HTMLElement {
     return this.detailsEl?.hasAttribute("open") ?? true;
   }
 
-  addStylesToPage() {
+  addStylesToPage(): void {
     // language=css
     const css: string = `
       :root {
