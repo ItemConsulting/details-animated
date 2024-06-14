@@ -1,5 +1,11 @@
 # @itemconsulting/details-animated
 
+## 0.0.5
+
+### Patch Changes
+
+- f8e8606: Fix so summary is opened when searching on chromium
+
 ## 0.0.4
 
 ### Patch Changes
