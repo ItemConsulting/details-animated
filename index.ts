@@ -1,11 +1,95 @@
+import {StateMachine} from "./StateMachine";
+
+type DetailsAnimatedStates = "closed" | "opening" | "open" | "closing";
+type Actions = "openWithAnimation"  | "closeWithAnimation" | "removeAttributeOpen";
+
 export default class DetailsAnimated extends HTMLElement {
   declare detailsEl: HTMLDetailsElement | null;
   declare bodyEls: ChildNode[];
+  declare stateMachine: StateMachine<DetailsAnimatedStates, Actions>;
 
   connectedCallback(): void {
     this.detailsEl = this.querySelector(":scope > details");
     const summaryEl = this.detailsEl?.querySelector(":scope > summary") ?? null;
 
+    if (this.detailsEl && summaryEl) {
+      this.setupDom();
+
+      this.stateMachine = new StateMachine<DetailsAnimatedStates, Actions>({
+        initState: "closed",
+        states: {
+          closed: {
+            click: {
+              to: "opening",
+              actions: ["openWithAnimation"]
+            }
+          },
+          opening: {
+            done: {
+              to: "open",
+            },
+            click: {
+              to: "closing",
+              actions: ["closeWithAnimation"]
+            }
+          },
+          open: {
+            click: {
+              to: "closing",
+              actions: ["closeWithAnimation"]
+            }
+          },
+          closing: {
+            done: {
+              to: "closed",
+              actions: ["removeAttributeOpen"]
+            },
+            click: {
+              to: "opening",
+              actions: ["openWithAnimation"]
+            }
+          },
+        },
+        actions: {
+          openWithAnimation: this.openWithAnimation.bind(this),
+          closeWithAnimation: this.closeWithAnimation.bind(this),
+          removeAttributeOpen: this.removeAttributeOpen.bind(this)
+        }
+      });
+
+      summaryEl.addEventListener("click", (event) => {
+        if (this.isOpen()) {
+          event.preventDefault();
+        }
+        this.stateMachine.emit("click");
+      });
+
+      this.detailsEl?.addEventListener("transitionend", () => this.stateMachine.emit("done"));
+
+      this.addStylesToPage()
+    }
+  }
+
+  openWithAnimation(): void {
+    // Firefox 126 doesn't animate without the setTimeout
+    setTimeout(() => {
+      this.detailsEl?.setAttribute("data-animate-open", "");
+    }, 0);
+  }
+
+  closeWithAnimation(): void {
+    this.detailsEl?.removeAttribute("data-animate-open");
+  }
+
+  removeAttributeOpen() {
+    this.detailsEl?.removeAttribute("open");
+  }
+
+  isOpen(): boolean {
+    return this.detailsEl?.hasAttribute("open") ?? true;
+  }
+
+  setupDom() {
     this.bodyEls = Array.from(this.detailsEl?.childNodes ?? []).filter((node: ChildNode) => {
       return node instanceof HTMLElement ? node.tagName !== "SUMMARY" : true;
     });
@@ -24,52 +108,9 @@ export default class DetailsAnimated extends HTMLElement {
 
     this.detailsEl?.appendChild(accordionBody);
 
-    if (this.detailsEl && summaryEl) {
-      if (this.isOpen()) {
-        this.detailsEl?.setAttribute("data-animate-open", "");
-      }
-
-      const observer = new MutationObserver(this.openWithAnimation.bind(this));
-      observer.observe(this.detailsEl, {
-        attributes: true,
-        attributeFilter: ["open"],
-      })
-
-      summaryEl.addEventListener("click", this.handleSummaryClick.bind(this));
-      this.addStylesToPage()
-    }
-  }
-
-  handleSummaryClick(event: Event): void {
     if (this.isOpen()) {
-      event.preventDefault();
-      this.closeWithAnimation();
+      this.detailsEl?.setAttribute("data-animate-open", "");
     }
-  }
-
-  openWithAnimation(): void {
-    if (this.isOpen()) {
-      // Firefox 126 doesn't animate without the setTimeout
-      setTimeout(() => this.detailsEl?.setAttribute("data-animate-open", ""), 0)
-    }
-  }
-
-  closeWithAnimation(): void {
-    this.detailsEl?.addEventListener(
-        "transitionend",
-        () => {
-          this.detailsEl?.removeAttribute("open");
-        },
-        {
-          once: true,
-        },
-    );
-
-    this.detailsEl?.removeAttribute("data-animate-open");
-  }
-
-  isOpen(): boolean {
-    return this.detailsEl?.hasAttribute("open") ?? true;
   }
 
   addStylesToPage(): void {

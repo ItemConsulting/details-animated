@@ -25,3 +25,19 @@ Use the custom element to wrap a `<details>`/`<summary`.
   </details>
 </details-animated>
 ```
+
+## Statechart
+
+The component is driven by a statemachine following this diagram:
+
+```mermaid
+stateDiagram-v2
+    [*] --> closed
+    closed --> opening: click
+    opening --> open: done
+    opening --> closing: click
+    closing --> closed: done
+    closing --> opening: click
+    open --> closing: click
+
+```
