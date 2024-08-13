@@ -1,5 +1,11 @@
 # @itemconsulting/details-animated
 
+## 0.1.0
+
+### Minor Changes
+
+- 9d97910: Introduce a simple state machine to manage the application state
+
 ## 0.0.6
 
 ### Patch Changes
