@@ -152,3 +152,5 @@ export default class DetailsAnimated extends HTMLElement {
     document.adoptedStyleSheets = [...document.adoptedStyleSheets, stylesheet];
   }
 }
+
+customElements.define('details-animated', DetailsAnimated);

@@ -1,5 +1,6 @@
 {
   "name": "@itemconsulting/details-animated",
+  "customElements": "custom-elements.json",
   "license": "MIT",
   "version": "0.0.6",
   "module": "dist/index.mjs",
@@ -17,6 +18,7 @@
     "dist",
     "README.md",
     "LICENSE",
+    "custom-elements.json",
     "tsconfig.json"
   ],
   "devDependencies": {

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "2.1.0",
+  "readme": "README.md",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "dist/index.mjs",
+      "declarations": [
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "DetailsAnimated",
+          "tagName": "details-animated",
+          "description": "Adds animation to the details element",
+          "superclass": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DetailsAnimated",
+          "declaration": {
+            "name": "DetailsAnimated"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "details-animated",
+          "declaration": {
+            "name": "DetailsAnimated"
+          }
+        }
+      ]
+    }
+  ]
+}
